@@ -11,7 +11,7 @@ import {
     Select,
     InputAdornment,
     InputBase,
-    Card, CardContent, Tooltip, IconButton
+    Card, CardContent, Tooltip, IconButton, Menu, CircularProgress
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -48,6 +48,27 @@ const TransactionHistory: React.FC = () => {
         "55.666.777/0001-88",
         "99.888.777/0001-66"
     ];
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [loading, setLoading] = React.useState(false);
+
+    const handleExportClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleMenuItemClick = (format: string) => {
+        setLoading(true);
+        setAnchorEl(null);
+        // Simulate a loading delay
+        setTimeout(() => {
+            setLoading(false);
+            console.log(`Exporting as ${format}`);
+        }, 2000);
+    };
 
     return (
         <Box sx={{ backgroundColor: '',  marginTop: '0.5cm' }}>
@@ -117,11 +138,21 @@ const TransactionHistory: React.FC = () => {
                             </Button>
                             <Button
                                 variant="contained"
-                                endIcon={<GetAppIcon />}
+                                endIcon={loading ? <CircularProgress size={24} /> : <GetAppIcon />}
                                 sx={{ backgroundColor: '#FF6600', color: 'white', boxShadow: 'none', borderRadius: 0, minWidth: { xs: '100%', sm: 120 }, height: 56, borderColor: 'white' }}
+                                onClick={handleExportClick}
                             >
-                                Exportar
+                                {loading ? 'Exportando...' : 'Exportar'}
                             </Button>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem onClick={() => handleMenuItemClick('Excel')} sx={{ minWidth: 125 }}>Excel</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('CSV')} sx={{ minWidth: 125 }}>CSV</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('PDF')} sx={{ minWidth: 125 }}>PDF</MenuItem>
+                            </Menu>
                         </Box>
                     </Box>
                 </Grid>
