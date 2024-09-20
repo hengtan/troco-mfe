@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Box, Modal, Typography, IconButton, Button } from '@mui/material';
+import {Box, Button, IconButton, Modal, Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import QRCodeBox from '../qRCodeBox/QRCodeBox'; // Certifique-se de que o caminho está correto
 import CopyInputQRCodeBox from '../copyInputQRCodeBox/CopyInputBox';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 interface QRCodeModalProps {
     open: boolean;
@@ -11,7 +10,7 @@ interface QRCodeModalProps {
     base64String: string | null;
 }
 
-const QRCodeModal: React.FC<QRCodeModalProps> = ({ open, handleClose, base64String }) => {
+const QRCodeModal: React.FC<QRCodeModalProps> = ({open, handleClose, base64String}) => {
     return (
         <Modal
             open={open}
@@ -27,8 +26,8 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ open, handleClose, base64Stri
         >
             <Box
                 sx={{
-                    backgroundColor: 'white',
-                    padding: 2,
+                    backgroundColor: '#F6F6F6', // Alterado para a cor desejada
+                    padding: 4,
                     borderRadius: 1,
                     boxShadow: 24,
                     width: 684,
@@ -40,11 +39,11 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ open, handleClose, base64Stri
             >
                 <IconButton
                     onClick={handleClose}
-                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                    sx={{position: 'absolute', top: 30, right: 30}}
                 >
-                    <CloseIcon />
+                    <CloseIcon/>
                 </IconButton>
-                <Box sx={{ width: '100%', height: '50px', backgroundColor: '', marginTop: 5 }} >
+                <Box sx={{width: '100%', height: '50px', backgroundColor: '', marginTop: 5}}>
                     <Typography id="qr-code-modal-title" variant="h2" component="h2">
                         Recarga de saldo
                     </Typography>
@@ -52,17 +51,48 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ open, handleClose, base64Stri
                         Aqui você pode adicionar a lógica para exibir o QR code gerado.
                     </Typography>
                 </Box>
-                <Box sx={{ width: '100%', height: '50px', backgroundColor: '', marginTop: 10 }}>
-                    <QRCodeBox base64String={base64String} />
+                <Box
+                    sx={{
+                        backgroundColor: 'white', // Fundo branco
+                        display: 'flex', // Flexbox para responsividade
+                        flexDirection: 'column', // Direção da coluna para os elementos internos
+                        padding: 2, // Espaçamento interno
+                        // borderRadius: 1, // Borda arredondada
+                        // boxShadow: 3 // Sombra para destaque
+                        marginTop: 5,
+                        height: '447px' // Aumenta a altura do Box
+
+                    }}
+                >
+                    <Box sx={{width: '100%', height: '50px', backgroundColor: '', marginTop: 5}}>
+                        <QRCodeBox base64String={base64String}/>
+                    </Box>
+                    <Box sx={{width: '100%', height: '50px', backgroundColor: '', marginTop: 20, padding: 6}}>
+                        <Typography
+                            id="qr-code-modal-description"
+                            variant="body1"
+                            component="p"
+                            sx={{fontSize: '14px', fontWeight: 'bold'}}
+                        >
+                            Copia e cola
+                        </Typography>
+                        <CopyInputQRCodeBox base64String={base64String}/>
+                    </Box>
                 </Box>
-                <Box sx={{ width: '100%', height: '50px', backgroundColor: '', marginTop: 25 }}>
-                    <Typography id="qr-code-modal-description" variant="body1" component="p">
-                        Copia e cola
-                    </Typography>
-                    <CopyInputQRCodeBox base64String={base64String} />
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
-                    <Button onClick={handleClose}>Fechar</Button>
+                <Box sx={{display: 'flex', justifyContent: 'flex-end', marginTop: 'auto'}}>
+                    <Button
+                        onClick={handleClose}
+                        sx={{
+                            backgroundColor: '#FF6600',
+                            color: 'white',
+                            border: 'none',
+                            fontSize: '16px',
+                            borderRadius: 0,
+                            textTransform: 'none'
+                        }}
+                    >
+                        Fechar
+                    </Button>
                 </Box>
             </Box>
         </Modal>

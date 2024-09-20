@@ -21,6 +21,7 @@ const RechargeSaldoModal: React.FC<RechargeSaldoModalProps> = ({ open, handleClo
             setBase64String('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'); // Simulação de recebimento do backend
             setQRCodeModalOpen(true);
         }, 3000);
+        handleClose(); // Fecha a modal assim que o botão é clicado
     };
 
     return (
