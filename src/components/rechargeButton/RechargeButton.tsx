@@ -1,22 +1,29 @@
-// src/components/balancecard/RechargeButton.tsx
 import * as React from 'react';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import RechargeSaldoModal from '../rechargeSaldoModal/RechargeSaldoModal';
 
-interface RechargeButtonProps {
-    onClick: () => void;
-}
+const RechargeButton: React.FC = () => {
+    const [open, setOpen] = React.useState(false);
 
-const RechargeButton: React.FC<RechargeButtonProps> = ({ onClick }) => {
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
-        <Button
-            variant="contained"
-            sx={{ backgroundColor: '#FF6600', borderRadius: 0, border: 'none' }}
-            endIcon={<AddIcon />}
-            onClick={onClick}
-        >
-            Recarregar
-        </Button>
+        <>
+            <Button
+                variant="contained"
+                sx={{ backgroundColor: '#FF6600', borderRadius: 0, border: 'none' }}
+                endIcon={<AddIcon />}
+                onClick={handleOpen}
+            >
+                Recarregar
+            </Button>
+            <RechargeSaldoModal
+                open={open}
+                handleClose={handleClose}
+            />
+        </>
     );
 };
 

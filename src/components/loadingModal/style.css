@@ -1,0 +1,25 @@
+@keyframes move {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.loading-dots span {
+    animation: move 0.6s infinite;
+    font-size: 3rem; /* Aumenta o tamanho dos pontos */
+    color: red; /* Define a cor dos pontos como vermelho */
+}
+
+.loading-dots span:nth-of-type(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-of-type(3) {
+    animation-delay: 0.4s;
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Box, Grid, Typography, Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Grid, Typography } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
+import RechargeButton from '../rechargeButton/RechargeButton'; // Certifique-se de que o caminho está correto
 
 const BalanceCard: React.FC = () => {
     return (
@@ -17,9 +17,7 @@ const BalanceCard: React.FC = () => {
                                 R$ 100,00
                             </Typography>
                         </Box>
-                        <Button variant="contained" sx={{ backgroundColor: '#FF6600', borderRadius: 0, border: 'none' }} endIcon={<AddIcon />}>
-                            Recarregar
-                        </Button>
+                        <RechargeButton /> {/* Usando o componente RechargeButton */}
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
