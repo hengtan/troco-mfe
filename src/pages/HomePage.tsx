@@ -6,7 +6,11 @@ import BalanceCard from '../components/balancecard/BalanceCard';
 import TransactionHistory from '../components/transactionHistory/TransactionHistory';
 import TableExtratoLancamentos from '../components/tableExtratoLancamentos/TableExtratoLancamentos';
 
-const HomePage = () => {
+interface HomePageProps {
+    containerWidth?: number;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ containerWidth }) => {
     return (
         <Box sx={{ mx: '10px', my: '20px' }}>
             <Title />
@@ -15,7 +19,7 @@ const HomePage = () => {
                 <BalanceCard />
             </Box>
             <Box sx={{ my: '20px' }}>
-                <TransactionHistory />
+                <TransactionHistory containerWidth={containerWidth} />
             </Box>
             <Box sx={{ my: '20px' }}>
                 <TableExtratoLancamentos />

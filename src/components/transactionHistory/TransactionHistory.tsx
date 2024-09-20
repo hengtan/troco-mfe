@@ -1,3 +1,4 @@
+// src/components/transactionHistory/TransactionHistory.tsx
 import * as React from 'react';
 import {
     Box,
@@ -5,18 +6,17 @@ import {
     Typography,
     MenuItem,
     Button,
-    InputLabel,
     FormControl,
     TextField,
     Select,
-    InputAdornment,
     InputBase,
-    Card, CardContent, Tooltip, IconButton, Menu, CircularProgress
+    Card, CardContent, Tooltip, IconButton, Menu, CircularProgress, Autocomplete, Snackbar, Alert, InputLabel
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import Autocomplete from '@mui/material/Autocomplete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import { styled } from '@mui/material/styles';
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -40,7 +40,11 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
 }));
 
-const TransactionHistory: React.FC = () => {
+interface TransactionHistoryProps {
+    containerWidth?: number;
+}
+
+const TransactionHistory: React.FC<TransactionHistoryProps> = ({ containerWidth }) => {
     const cnpjOptions = [
         "12.345.678/0001-90",
         "98.765.432/0001-10",
@@ -51,6 +55,9 @@ const TransactionHistory: React.FC = () => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [loading, setLoading] = React.useState(false);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState<'success' | 'error'>('success');
 
     const handleExportClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -66,35 +73,32 @@ const TransactionHistory: React.FC = () => {
         // Simulate a loading delay
         setTimeout(() => {
             setLoading(false);
-            console.log(`Exporting as ${format}`);
+            setSnackbarMessage(`Exported as ${format}`);
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
         }, 2000);
     };
 
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
     return (
-        <Box sx={{ backgroundColor: '',  marginTop: '0.5cm' }}>
+        <Box sx={{ backgroundColor: '', marginTop: '0.5cm' }}>
             <Typography variant="h5" component="h2">
                 Extrato de Lançamentos
             </Typography>
             <Grid container spacing={0} alignItems="center" sx={{ marginTop: '0.7cm' }}>
                 <Grid item xs={12} sx={{ marginBottom: '0.7cm' }}>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, flexGrow: 1 }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 2, flexGrow: 1 }}>
                             <FormControl variant="outlined" sx={{ minWidth: { xs: '100%', sm: 300 }, backgroundColor: 'white', flexGrow: 1 }}>
                                 <Autocomplete
                                     options={cnpjOptions}
                                     renderInput={(params) => (
                                         <CustomTextField
                                             {...params}
-                                            label="Digite o CNPJ Loja"
-                                            variant="outlined"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <ArrowDropDownIcon />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
+                                            label="CNPJ"
                                         />
                                     )}
                                     freeSolo
@@ -128,7 +132,7 @@ const TransactionHistory: React.FC = () => {
                                 </Select>
                             </FormControl>
                         </Box>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginLeft: 'auto' }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 2, marginLeft: 'auto' }}>
                             <Button
                                 variant="contained"
                                 endIcon={<FilterListIcon />}
@@ -189,6 +193,26 @@ const TransactionHistory: React.FC = () => {
                     </Box>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                sx={{ width: containerWidth ? `${containerWidth - 20}px` : 'calc(100% - 32px)', maxWidth: '1200px', margin: '0 auto' }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity={snackbarSeverity}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: snackbarSeverity === 'success' ? 'darkgreen' : 'darkred',
+                        color: 'white'
+                    }}
+                    icon={snackbarSeverity === 'success' ? <CheckCircleIcon sx={{ color: 'white' }} fontSize="inherit" /> : <ErrorIcon sx={{ color: 'white' }} fontSize="inherit" />}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
